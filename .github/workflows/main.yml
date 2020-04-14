@@ -17,6 +17,8 @@ jobs:
           mkdir -p "$HOMEBREW_TAP_DIR"
           rm -rf "$HOMEBREW_TAP_DIR"
           ln -s "$PWD" "$HOMEBREW_TAP_DIR"
+      - name: Cleanup logs
+        run: rm -r ~/Library/Logs/Homebrew
       - name: Run brew test-bot
         run: |
           mkdir bottles
@@ -36,3 +38,9 @@ jobs:
         with:
           name: bottles
           path: bottles
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v2-preview
+        with:
+          name: logs
+          path: ~/Library/Logs/Homebrew/
